@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
-<body>
+<body background="<%=application.getContextPath()%>/imgs/bg.png">
 	<h1>방문을 환영합니다</h1>
 	<ul type="square">
 		<li>

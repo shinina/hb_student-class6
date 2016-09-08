@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
-<body>
+<body background="<%=application.getContextPath()%>/imgs/bg.png">
 	<h1>GUEST TABLE LIST</h1>
 	<table>
 		<tr>

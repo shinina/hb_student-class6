@@ -1,7 +1,6 @@
 package com.guest.model;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,24 +8,22 @@ import java.util.ArrayList;
 
 import com.guest.bean.GuestBean;
 
-public class GuestDao {
+public class GuestDao2 {
 	private Connection conn;
 	private Statement stmt;
-	private PreparedStatement pstmt;
 	private ResultSet rs;
 	private int result = -1;
 	
-	public GuestDao(){
+	public GuestDao2(){
 		
 	}
 	
 	public int deleteOne(int sabun){
-		String sql = "delete from guest where sabun=?";
+		String sql = "delete from guest where sabun="+sabun;
 		conn =  OraDB.getConnection();
 		try{
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, sabun);
-			result = pstmt.executeUpdate();
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(sql);
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}finally{
@@ -34,6 +31,7 @@ public class GuestDao {
 				if(conn!=null)
 				conn.close();
 			} catch (SQLException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -41,16 +39,13 @@ public class GuestDao {
 	}
 	
 	public int updateOne(GuestBean bean){
-		String sql = "update guest set name=?,";
-		sql += "pay=? where sabun=?";
+		String sql = "update guest set name='"+bean.getName()+"',";
+		sql += "pay="+bean.getPay()+" where sabun="+bean.getSabun();
 		System.out.println(sql);
 		conn = OraDB.getConnection();
 		try{
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, bean.getName());
-			pstmt.setInt(2, bean.getPay());
-			pstmt.setInt(3, bean.getSabun());
-			result = pstmt.executeUpdate();
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(sql);
 		}catch(Exception ex){
 			System.out.println(ex.getMessage());
 		}finally{
@@ -58,6 +53,7 @@ public class GuestDao {
 					if(conn!=null)
 					conn.close();
 				} catch (SQLException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}
@@ -67,17 +63,13 @@ public class GuestDao {
 	public int insertOne(String name, int pay){
 		
 		String sql = "insert into guest (sabun, name, nalja, pay)";
-		sql += " values (guest_seq.nextval, ? , sysdate, ?)";
+		sql += " values (guest_seq.nextval, '"+name+"', sysdate, "+pay+")";
 		System.out.println(sql);
 		conn = OraDB.getConnection();
 		try{
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
-			pstmt.setInt(2, pay);
-			result = pstmt.executeUpdate();
-		}catch(Exception ex){
-			ex.printStackTrace();
-		}finally{
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(sql);
+		}catch(Exception ex){}finally{
 			try{
 				if(rs!=null)rs.close();
 				if(stmt!=null)stmt.close();
@@ -94,8 +86,8 @@ public class GuestDao {
 		ArrayList<GuestBean> list = new ArrayList<GuestBean>();
 		conn = OraDB.getConnection();
 		try {
-			pstmt = conn.prepareStatement(sql);
-			rs =  pstmt.executeQuery();
+			stmt = conn.createStatement();
+			rs =  stmt.executeQuery(sql);
 			while(rs.next()){
 				GuestBean bean = new GuestBean();
 				bean.setSabun(rs.getInt("sabun"));
@@ -119,14 +111,13 @@ public class GuestDao {
 	}
 	
 	public GuestBean selectOne(int sabun){
-		String sql =  "select * from guest where sabun=?";
+		String sql =  "select * from guest where sabun="+sabun;
 		GuestBean bean = new GuestBean();
 		System.out.println(sql);
 		conn = OraDB.getConnection();
 		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, sabun);
-			rs =  pstmt.executeQuery();
+			stmt = conn.createStatement();
+			rs =  stmt.executeQuery(sql);
 			if(rs.next()){
 				bean.setSabun(rs.getInt("sabun"));
 				bean.setName(rs.getString("name"));

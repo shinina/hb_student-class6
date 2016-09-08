@@ -7,7 +7,7 @@ public class OraDB {
     private Connection conn;
     
     public OraDB(){
-    	String url = "jdbc:oracle:thin:@localhost:1521/xe";
+    	String url = "jdbc:oracle:thin:@203.236.209.201:1521/xe";
     	String user = "scott";
     	String password = "tiger";
     	try{
